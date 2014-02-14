@@ -28,7 +28,7 @@ namespace iMouse
 
 		public bool AddLocus(Locus l) 
 		{
-			if (loci.Contains(l)) { // then Equal is needed for Locus
+			if (loci.Contains(l)) { 
 				return false;
 			} else {
 				loci.AddLast(l);
@@ -91,6 +91,11 @@ namespace iMouse
 		public override int GetHashCode()
 		{
 			return id;
+		}
+
+		public override string ToString ()
+		{
+			return id + ", born on " + dob;
 		}
 
 }

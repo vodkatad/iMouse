@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace iMouse
 {
 	public class Cage : IEnumerable
 	{
-		private Mouse[] mice; // LinkedList could work too, we do not need direct access.
+		private LinkedList<Mouse> mice;
 		private int id;
 
 		public Cage(int id)
@@ -13,69 +14,37 @@ namespace iMouse
 			this.id = id;
 		}
 		public int Occupancy {
-			get { return mice.Length; }
+			get { return mice.Count; }
 		}
 
-		public bool AddMouse(Mouse m) {
-			throw NotImplementedException();
+		public bool AddMouse(Mouse m) 
+		{
+			if (mice.Contains(m)) {
+				return false;
+			} else {
+				mice.AddLast(m);
+				return true;
+			}
 		}
 
-		public bool RemoveMouse(Mouse m) {
-			throw NotImplementedException();
+		public bool RemoveMouse(Mouse m) 
+		{
+			if (!mice.Contains(m)) { 
+				return false;
+			} else {
+				mice.RemoveFirst(m);
+				return true;
+			}
 		}
 
 		public int Id { get {return this.id;} }
 
 		public IEnumerator GetEnumerator()
 		{
-			return new MiceEnumerator(this);
+			return mice.GetEnumerator();
 		}
 
-		private class MiceEnumerator : IEnumerator
-		{
-			private int position = -1;
-			private Cage c;
 
-			public MiceEnumerator(Cage c)
-			{
-				this.c = c;
-			}
-
-			// Declare the MoveNext method required by IEnumerator:
-			public bool MoveNext()
-			{
-				if (position < c.mice.Length - 1) {
-					position++;
-					return true;
-				} else {
-					return false;
-				}
-			}
-
-			// Declare the Reset method required by IEnumerator:
-			public void Reset()
-			{
-				position = -1;
-			}
-
-			// Declare the Current property required by IEnumerator:
-			// Explicit interface implementation in order to have also the next one (typesafe).
-			public object IEnumerator.Current
-			{
-				get
-				{
-					return c.mice[position];
-				}
-			}
-
-			public Mouse Current
-			{
-				get
-				{
-					return c.mice[position];
-				}
-			}
-		}
 	}
 }
 
