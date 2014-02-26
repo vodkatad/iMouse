@@ -1,44 +1,57 @@
 using System;
 using System.Collections.Generic;
 
-namespace iMouse
+namespace IMouse
 {
-	public class Mouse
+	public class Mouse : IEquatable<Mouse>
 	{
-		private DateTime dob;
-		private int id;
-		private LinkedList<Locus> loci;
+		private readonly DateTime dateOfBirth;
+		private readonly int id;
+		private List<Locus> loci;
+		private readonly char sex;
 
-		public Mouse(DateTime dob, int id)
+		public Mouse(DateTime dob, int id, char sex)
 		{
-			this.dob = dob;
+			if (sex != 'F' && sex != 'M') {
+				throw new ArgumentOutOfRangeException("Mouse sex can only be M or F, given: " + sex);
+			}
+			this.dateOfBirth = dob;
 			this.id = id;
-		}
-		public double AgeMonth()
-		{
-			throw new NotImplementedException();
+			this.loci = new List<Locus>();
+			this.sex = sex;
 		}
 
-		public double AgeDays()
+		public double AgeMonth
 		{
-			throw new NotImplementedException();
+			get { throw new NotImplementedException(); }
 		}
 
-		public DateTime Dob { get {return this.dob; } }
+		public double AgeDays
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public DateTime Dob 
+		{ 
+			get { 
+				return this.dateOfBirth; 
+			}
+		}
+
+		public char Sex {
+			get {
+				return sex;
+			}
+		}
 
 		public bool AddLocus(Locus l) 
 		{
 			if (loci.Contains(l)) { 
 				return false;
 			} else {
-				loci.AddLast(l);
+				loci.Add(l);
 				return true;
 			}
-		}
-
-		public bool IsOmozigous()
-		{
-			throw NotImplementedException();
 		}
 
 		public bool IsOmozigous(string locus) 
@@ -48,7 +61,7 @@ namespace iMouse
 					return l.IsOmozigous();
 				}
 			}
-			throw new Exception("Non existent locus accessed\n");
+			throw new Exception("Non existent locus accessed");
 		}
 
 		public Locus GetLocus(string locus)
@@ -58,30 +71,18 @@ namespace iMouse
 					return l;
 				}
 			}
-			throw new Exception("Non existent locus accessed\n");
+			throw new Exception("Non existent locus accessed");
 		}
 		
 		public override bool Equals(Object obj) 
 		{
-			// If parameter is null return false.
-			if (obj == null)
-			{
-				return false;
-			}
-			// If parameter cannot be cast to Point return false.
-			Mouse m = obj as Mouse;
-			if ((System.Object)m == null)
-			{
-				return false;
-			}
-			// Return true if the fields match:
-			return m.id == this.id;
+			return Equals(obj as Mouse);
 		}
+
 		public bool Equals(Mouse m)
 		{
 			// If parameter is null return false:
-			if ((object)m == null)
-			{
+			if (m == null) {
 				return false;
 			}
 			// Return true if the fields match:
@@ -95,8 +96,8 @@ namespace iMouse
 
 		public override string ToString ()
 		{
-			return id + ", born on " + dob;
+			return id + ", born on " + dateOfBirth + " sex: " + sex;
 		}
-
+	}
 }
 

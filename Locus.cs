@@ -1,6 +1,6 @@
 using System;
 
-namespace iMouse
+namespace IMouse
 {
 	public class Locus
 	{
@@ -49,8 +49,9 @@ namespace iMouse
 
 		public override int GetHashCode()
 		{
-			return GetHashCode(name) + GetHashCode(paternalAllele) + GetHashCode(maternalAllele);
+			return name.GetHashCode() ^ paternalAllele.GetHashCode() ^ maternalAllele.GetHashCode();
 		}
+	
 	}
 }
 
